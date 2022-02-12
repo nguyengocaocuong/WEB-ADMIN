@@ -89,16 +89,16 @@ const Analytics = () => {
     const [selectRange, setSelectRange] = useState(ranges[0]);
    
 
-    const compareDate = (dateStart, dateEnd) => {
-        if (dateStart.getTime() === dateEnd.getTime()) {
-            return 0;
-        }
-        else if (dateStart.getTime() < dateEnd.getTime()) {
-            return -1;
-        } else {
-            return 1;
-        }
-    }
+    // const compareDate = (dateStart, dateEnd) => {
+    //     if (dateStart.getTime() === dateEnd.getTime()) {
+    //         return 0;
+    //     }
+    //     else if (dateStart.getTime() < dateEnd.getTime()) {
+    //         return -1;
+    //     } else {
+    //         return 1;
+    //     }
+    // }
     return (
         <div className="analyics-component">
             <div className="analyics-header">

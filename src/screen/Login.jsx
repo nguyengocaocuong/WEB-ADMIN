@@ -35,11 +35,9 @@ export const Login = () => {
                 res => {
                     if (res.status === 200) {
                         localStorage.setItem('token-admin', res.data.success.token)
-                        history.push('/')
-                        console.log(res.data);
                         localStorage.setItem('admin',JSON.stringify(account))
                         setaccount(new Account())
-                        
+                        history.push('/')
                     }
                 }
             )

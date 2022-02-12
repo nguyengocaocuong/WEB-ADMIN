@@ -7,8 +7,7 @@ import "react-responsive-modal/styles.css"
 import './censorshipLine.css'
 import Axios from 'axios'
 import api from '../../assets/JsonData/api.json'
-import { useDispatch } from 'react-redux'
-import notifyActions from '../../redux/actions/NotifyActions'
+import { toast } from 'react-toastify'
 const latestOrderHeader = [
     "STT",
     "Tên giảng viên",
@@ -28,7 +27,6 @@ const renderOrderHead = (item, index) => (
 
 export const CensorshipLine = (props) => {
     let newCourses = []
-    const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
     const onOpenModal = () => setOpen(true)
     const onCloseModal = () => setOpen(false)
@@ -46,30 +44,36 @@ export const CensorshipLine = (props) => {
             "Authorization": `Bearer ${localStorage.getItem('token-admin')}`
         }
     }
+    const reload = ()=>{
+        props.reload()
+    }
     const handleBadge = (tag, item, index = 1) => {
         switch (tag) {
             case 1:
-                Axios.post(api.find(e => e.pages === 'Phê duyệt').api['post-sencorship-approve'], { Course_ID: item.Course_ID },axiosConfig)
+                Axios.post(api.find(e => e.pages === 'Phê duyệt').api['post-sencorship-approve'], { Course_ID: item.Course_ID }, axiosConfig)
                     .then(
                         res => {
-                            if (res.status === 200)
-                                dispatch(notifyActions.addNotify({ notifyType: 'notify-success', message: `Phê duyệt thành công : ${item.Course_header}` }))
+                            if (res.status === 200){
+                                toast.success(`Phê duyệt thành công : ${item.Course_header}`)
+                                reload()
+                            }
+                               
                         }
                     ).catch(
-                        () =>
-                            dispatch(notifyActions.addNotify({ notifyType: 'notify-error', message: `Phê duyệt không thành công: ${item.Course_header}` }))
+                        () => toast.error(`Phê duyệt không thành công: ${item.Course_header}`)
                     )
                 break
             case 2:
-                Axios.post(api.find(e => e.pages === 'Phê duyệt').api['post-sencorship-refuse'], { Course_ID: item.Course_ID },axiosConfig)
+                Axios.post(api.find(e => e.pages === 'Phê duyệt').api['post-sencorship-refuse'], { Course_ID: item.Course_ID }, axiosConfig)
                     .then(
                         res => {
-                            if (res.status === 200)
-                                dispatch(notifyActions.addNotify({ notifyType: 'notify-success', message: `Đã loại bỏ khóa học : ${item.Course_header}` }))
+                            if (res.status === 200){
+                                toast.success(`Đã loại bỏ khóa học : ${item.Course_header}`)
+                                reload()
+                            }
                         }
                     ).catch(
-                        () =>
-                            dispatch(notifyActions.addNotify({ notifyType: 'notify-error', message: `Lỗi khi loại bỏ khóa học: ${item.Course_header}` }))
+                        () => toast.error( `Lỗi khi loại bỏ khóa học: ${item.Course_header}`)
                     )
 
                 break
@@ -112,7 +116,7 @@ export const CensorshipLine = (props) => {
                             </div>
                             <div className='course-infor__item'>
                                 <span className='course-infor__item-title'>Mô tả khoá học</span>
-                                <span className='course-infor__item-content lession-description_value'>{course.Course_description}</span>
+                                <span className='course-infor__item-content Lesson-description_value'>{course.Course_description}</span>
                             </div>
                             <div className='course-infor__item'>
                                 <span className='course-infor__item-title'>Số lượng bài giảng</span>

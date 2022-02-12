@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { Route, useHistory } from 'react-router-dom'
@@ -9,7 +9,8 @@ import ThemeActions from '../../redux/actions/ThemeAction'
 import './Layout.css'
 import { checkToken } from '../../service'
 import { Notify } from '../notify/Notify'
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Layout = () => {
     const themeReducer = useSelector(state => state.ThemeReducer)
@@ -28,14 +29,25 @@ export const Layout = () => {
         checkToken().then(res => {
             if (res !== 1) {
                 history.push('/login')
-            }else setStatus(1)
+            } else setStatus(1)
         })
-    },[])
+    }, [])
     if (status !== 0)
         return (
             <>
                 <Route render={(props) => {
                     return (<div className={`layout ${themeReducer.mode} ${themeReducer.color}`}>
+                    <ToastContainer
+                    position="bottom-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    />
                         <Sidebar {...props} />
                         <div className="layout_content">
                             <TopNav />
@@ -43,7 +55,7 @@ export const Layout = () => {
                                 <Routes />
                             </div>
                         </div>
-                        <Notify/>
+                        <Notify />
                     </div>)
                 }} />
             </>

@@ -107,7 +107,7 @@ const Dashboard = () => {
             .then(
                 (res) => {
                     const data = res.data
-                    setStudents(data);
+                    setStudents(data.slice(0,4));
                 }
             )
 
